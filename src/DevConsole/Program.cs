@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using GrafanaCli.Core.Config;
 using GrafanaCli.Core.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace GrafanaCli.DevConsole
       SetupDIContainer();
 
       _provider.GetService<ILoggerAdapter<Program>>().LogTrace("Hello World");
+      var config = _provider.GetService<GrafanaCliConfig>();
 
       Console.WriteLine("Hello World!");
     }
@@ -30,14 +32,18 @@ namespace GrafanaCli.DevConsole
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
         .Build();
 
+      var grafanaCliConfig = new GrafanaCliConfig();
+      config.Bind("GrafanaCli", grafanaCliConfig);
+
       collection
+        .AddSingleton(grafanaCliConfig)
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
         .AddLogging(loggingBuilder =>
         {
           loggingBuilder.ClearProviders();
           loggingBuilder.SetMinimumLevel(LogLevel.Trace);
           loggingBuilder.AddNLog(config);
-        }); ;
+        });
 
       _provider = collection.BuildServiceProvider();
     }
