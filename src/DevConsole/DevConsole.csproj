@@ -6,4 +6,8 @@
     <RootNamespace>Grafana_CLI_DevConsole</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Grafana-CLI-Core\Grafana-CLI-Core.csproj" />
+  </ItemGroup>
+
 </Project>
