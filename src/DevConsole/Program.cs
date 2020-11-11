@@ -6,6 +6,7 @@ using GrafanaCli.Core.Clients;
 using GrafanaCli.Core.Config;
 using GrafanaCli.Core.Logging;
 using GrafanaCli.DevConsole.DevUtils;
+using GrafanaCli.DevConsole.DevUtils.Builders;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,8 +23,13 @@ namespace GrafanaCli.DevConsole
       SetupDIContainer();
 
       var pathBuilder = new DevDataPathBuilder();
-
       var responseFile = pathBuilder.ResponseFile("search.dashboards.all.success");
+
+      var devGrafanaUrlBuilder = new DevGrafanaUrlBuilderBuilder()
+        .WithListAllDashboardsUrl("foobar")
+        .Build();
+
+      var dashboards = devGrafanaUrlBuilder.ListAllDashboards();
 
       //var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
       //var httpClient = _provider.GetService<IGrafanaHttpClient>();
