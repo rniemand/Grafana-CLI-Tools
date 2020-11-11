@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "uid": "sOe0t62Gk",
+    "title": "Dashboard 1",
+    "uri": "db/dashboard-1",
+    "url": "/d/sOe0t62Gk/dashboard-1",
+    "slug": "",
+    "type": "dash-db",
+    "tags": [],
+    "isStarred": false
+  },
+  {
+    "id": 2,
+    "uid": "XmtJpe2Gz",
+    "title": "Dashboard 2",
+    "uri": "db/dashboard-2",
+    "url": "/d/XmtJpe2Gz/dashboard-2",
+    "slug": "",
+    "type": "dash-db",
+    "tags": [],
+    "isStarred": false
+  },
+  {
+    "id": 3,
+    "uid": "FJ1QoehGz",
+    "title": "Hass Sample",
+    "uri": "db/hass-sample",
+    "url": "/d/FJ1QoehGz/hass-sample",
+    "slug": "",
+    "type": "dash-db",
+    "tags": [],
+    "isStarred": false
+  },
+  {
+    "id": 4,
+    "uid": "-VlQTehGz",
+    "title": "Whatever",
+    "uri": "db/whatever",
+    "url": "/d/-VlQTehGz/whatever",
+    "slug": "",
+    "type": "dash-db",
+    "tags": [],
+    "isStarred": false
+  }
+]

@@ -5,6 +5,7 @@ using GrafanaCli.Core.Builders;
 using GrafanaCli.Core.Clients;
 using GrafanaCli.Core.Config;
 using GrafanaCli.Core.Logging;
+using GrafanaCli.DevConsole.DevUtils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,15 +21,24 @@ namespace GrafanaCli.DevConsole
     {
       SetupDIContainer();
 
-      var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
-      var httpClient = _provider.GetService<IGrafanaHttpClient>();
+      var pathBuilder = new DevDataPathBuilder();
 
-      var request = new HttpRequestMessage(HttpMethod.Get, urlBuilder.ListAllDashboards());
+      var responseFile = pathBuilder.ResponseFile("search.dashboards.all.success");
 
-      var response = httpClient.SendAsync(request)
-        .ConfigureAwait(false)
-        .GetAwaiter()
-        .GetResult();
+      //var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
+      //var httpClient = _provider.GetService<IGrafanaHttpClient>();
+
+      //var request = new HttpRequestMessage(HttpMethod.Get, urlBuilder.ListAllDashboards());
+
+      //var response = httpClient.SendAsync(request)
+      //  .ConfigureAwait(false)
+      //  .GetAwaiter()
+      //  .GetResult();
+
+      //var responseString = response.Content.ReadAsStringAsync()
+      //  .ConfigureAwait(false)
+      //  .GetAwaiter()
+      //  .GetResult();
 
 
       Console.WriteLine("Hello World!");
