@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Grafana_CLI_Core</RootNamespace>
+    <RootNamespace>GrafanaCli.Core</RootNamespace>
   </PropertyGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Grafana_CLI_DevConsole
+namespace GrafanaCli.DevConsole
 {
   class Program
   {
