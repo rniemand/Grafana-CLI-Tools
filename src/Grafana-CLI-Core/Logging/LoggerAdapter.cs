@@ -5,10 +5,11 @@ namespace GrafanaCli.Core.Logging
 {
   public interface ILoggerAdapter<T>
   {
-    void LogTrace(string message, params object[] args);
-    void LogDebug(string message, params object[] args);
-    void LogInformation(string message, params object[] args);
-    void LogError(Exception ex, string message, params object[] args);
+    void Trace(string message, params object[] args);
+    void Debug(string message, params object[] args);
+    void Information(string message, params object[] args);
+    void Warning(string message, params object[] args);
+    void Error(Exception ex, string message, params object[] args);
   }
 
   public class LoggerAdapter<T> : ILoggerAdapter<T>
@@ -20,22 +21,27 @@ namespace GrafanaCli.Core.Logging
       _logger = logger;
     }
 
-    public void LogTrace(string message, params object[] args)
+    public void Trace(string message, params object[] args)
     {
       _logger.LogTrace(message, args);
     }
 
-    public void LogDebug(string message, params object[] args)
+    public void Debug(string message, params object[] args)
     {
       _logger.LogDebug(message, args);
     }
 
-    public void LogInformation(string message, params object[] args)
+    public void Information(string message, params object[] args)
     {
       _logger.LogInformation(message, args);
     }
 
-    public void LogError(Exception ex, string message, params object[] args)
+    public void Warning(string message, params object[] args)
+    {
+      _logger.LogWarning(message, args);
+    }
+
+    public void Error(Exception ex, string message, params object[] args)
     {
       _logger.LogError(ex, message, args);
     }

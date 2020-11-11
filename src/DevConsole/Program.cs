@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
+using GrafanaCli.Core.Abstractions;
 using GrafanaCli.Core.Builders;
 using GrafanaCli.Core.Clients;
 using GrafanaCli.Core.Config;
@@ -23,24 +24,25 @@ namespace GrafanaCli.DevConsole
       var pathBuilder = new DevDataPathBuilder();
       var responseFile = pathBuilder.ResponseFile("search.dashboards.all.success");
 
-      var devGrafanaUrlBuilder = new DevGrafanaUrlBuilderBuilder()
+      var grafanaUrlBuilder = new DevGrafanaUrlBuilderBuilder()
         .WithListAllDashboardsUrl("foobar")
         .Build();
 
+      var grafanaHttpClient = new DevGrafanaHttpClientBuilder()
+        .WithOkResponse("foobar", responseFile)
+        .Build();
 
-      SetupDIContainer(devGrafanaUrlBuilder);
+      SetupDIContainer(grafanaUrlBuilder, grafanaHttpClient);
 
       var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
-      //var httpClient = _provider.GetService<IGrafanaHttpClient>();
+      var httpClient = _provider.GetService<IGrafanaHttpClient>();
 
-      var listAllDashboards = urlBuilder.ListAllDashboards();
+      var request = new HttpRequestMessage(HttpMethod.Get, urlBuilder.ListAllDashboards());
 
-      //var request = new HttpRequestMessage(HttpMethod.Get, urlBuilder.ListAllDashboards());
-
-      //var response = httpClient.SendAsync(request)
-      //  .ConfigureAwait(false)
-      //  .GetAwaiter()
-      //  .GetResult();
+      var response = httpClient.SendAsync(request)
+        .ConfigureAwait(false)
+        .GetAwaiter()
+        .GetResult();
 
       //var responseString = response.Content.ReadAsStringAsync()
       //  .ConfigureAwait(false)
@@ -52,7 +54,8 @@ namespace GrafanaCli.DevConsole
     }
 
     private static void SetupDIContainer(
-      IGrafanaUrlBuilder grafanaUrlBuilder = null)
+      IGrafanaUrlBuilder grafanaUrlBuilder = null,
+      IGrafanaHttpClient grafanaHttpClient = null)
     {
       var collection = new ServiceCollection();
 
@@ -62,7 +65,7 @@ namespace GrafanaCli.DevConsole
         .Build();
 
       collection
-        .AddSingleton<IGrafanaHttpClient, GrafanaHttpClient>()
+        .AddSingleton<IFile, FileAbstraction>()
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
         .AddLogging(loggingBuilder =>
         {
@@ -73,6 +76,7 @@ namespace GrafanaCli.DevConsole
 
       RegisterGrafanaCliConfig(collection, config);
       RegisterGrafanaUrlBuilder(collection, grafanaUrlBuilder);
+      RegisterGrafanaHttpClient(collection, grafanaHttpClient);
 
       _provider = collection.BuildServiceProvider();
     }
@@ -93,6 +97,17 @@ namespace GrafanaCli.DevConsole
       }
 
       collection.AddSingleton<IGrafanaUrlBuilder, GrafanaUrlBuilder>();
+    }
+
+    private static void RegisterGrafanaHttpClient(IServiceCollection collection, IGrafanaHttpClient httpClient = null)
+    {
+      if (httpClient != null)
+      {
+        collection.AddSingleton(httpClient);
+        return;
+      }
+
+      collection.AddSingleton<IGrafanaHttpClient, GrafanaHttpClient>();
     }
   }
 }

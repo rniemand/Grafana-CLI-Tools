@@ -24,7 +24,7 @@ namespace GrafanaCli.Core.Builders
       // TODO: [TESTS] (GrafanaUrlBuilder.GrafanaUrlBuilder) Add tests
 
       _baseUrl = config.GrafanaBaseUrl.AppendIfMissing("/");
-      _logger.LogTrace("Base URL set to: {url}", _baseUrl);
+      _logger.Trace("Base URL set to: {url}", _baseUrl);
     }
 
     public string ListAllDashboards()
@@ -33,7 +33,7 @@ namespace GrafanaCli.Core.Builders
       // TODO: [COMPLETE] (GrafanaUrlBuilder.ListAllDashboards) Add support for pagination
 
       var url = $"{_baseUrl}api/search?type=dash-db";
-      _logger.LogTrace("Search URL: {url}", url);
+      _logger.Trace("Search URL: {url}", url);
       return url;
     }
   }
