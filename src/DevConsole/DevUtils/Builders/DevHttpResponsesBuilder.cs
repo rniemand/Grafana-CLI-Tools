@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using GrafanaCli.Core.Enums;
 using GrafanaCli.Core.Models;
 
@@ -14,9 +15,9 @@ namespace GrafanaCli.DevConsole.DevUtils.Builders
       _responses = new List<DevHttpResponse>();
     }
 
-    public DevHttpResponsesBuilder WithOkResponse(string url, string filePath)
+    public DevHttpResponsesBuilder WithOkJsonResponse(string url, string filePath)
     {
-      // TODO: [TESTS] (DevHttpResponsesBuilder.WithOkResponse) Add tests
+      // TODO: [TESTS] (DevHttpResponsesBuilder.WithOkJsonResponse) Add tests
 
       _responses.Add(new DevHttpResponse
       {
@@ -24,7 +25,10 @@ namespace GrafanaCli.DevConsole.DevUtils.Builders
         Url = url,
         FilePath = filePath,
         StatusCode = HttpStatusCode.OK,
-        ResponseDelayMs = DevHelper.Random.Next(10, 300)
+        ResponseDelayMs = DevHelper.Random.Next(10, 300),
+        ContentType = "application/json",
+        ContentEncoding = Encoding.UTF8,
+        SetResponseContent = true
       });
 
       return this;

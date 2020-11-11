@@ -45,12 +45,17 @@ namespace GrafanaCli.DevConsole.DevUtils.Clients
       }
 
       var httpResponse = new HttpResponseMessage(response.StatusCode);
-      // var responseBody = GetResponseBody(response);
+      if (response.SetResponseContent)
+      {
+        httpResponse.Content = new StringContent(
+          GetResponseBody(response),
+          response.ContentEncoding,
+          response.ContentType
+        );
+      }
+
       await Task.Delay(response.ResponseDelayMs);
-
-
-
-      throw new NotImplementedException();
+      return httpResponse;
     }
 
     // Internal methods

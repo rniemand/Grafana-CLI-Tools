@@ -30,7 +30,7 @@ namespace GrafanaCli.DevConsole
         .Build();
 
       var responsesBuilder = new DevHttpResponsesBuilder()
-        .WithOkResponse("foobar", responseFile);
+        .WithOkJsonResponse("foobar", responseFile);
 
       var devConfig = new DeveloperConfigBuilder()
         .AsEnabled()
@@ -49,10 +49,10 @@ namespace GrafanaCli.DevConsole
         .GetAwaiter()
         .GetResult();
 
-      //var responseString = response.Content.ReadAsStringAsync()
-      //  .ConfigureAwait(false)
-      //  .GetAwaiter()
-      //  .GetResult();
+      var responseString = response.Content.ReadAsStringAsync()
+        .ConfigureAwait(false)
+        .GetAwaiter()
+        .GetResult();
 
 
       Console.WriteLine("Hello World!");
