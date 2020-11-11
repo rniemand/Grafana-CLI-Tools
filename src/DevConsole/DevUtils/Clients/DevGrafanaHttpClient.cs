@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GrafanaCli.Core.Abstractions;
 using GrafanaCli.Core.Clients;
+using GrafanaCli.Core.Config;
+using GrafanaCli.Core.Enums;
 using GrafanaCli.Core.Logging;
-using GrafanaCli.DevConsole.DevUtils.Enums;
-using GrafanaCli.DevConsole.DevUtils.Models;
+using GrafanaCli.Core.Models;
 
 namespace GrafanaCli.DevConsole.DevUtils.Clients
 {
@@ -16,15 +16,18 @@ namespace GrafanaCli.DevConsole.DevUtils.Clients
   {
     private readonly ILoggerAdapter<DevGrafanaHttpClient> _logger;
     private readonly IFile _file;
-    private readonly List<DevHttpClientResponse> _responses;
+    private readonly List<DevHttpResponse> _responses;
 
     public DevGrafanaHttpClient(
       ILoggerAdapter<DevGrafanaHttpClient> logger,
-      IFile file)
+      IFile file,
+      GrafanaCliConfig config)
     {
+      // TODO: [TESTS] (DevGrafanaHttpClient.DevGrafanaHttpClient) Add tests
+
       _logger = logger;
       _file = file;
-      _responses = new List<DevHttpClientResponse>();
+      _responses = config.DevConfig.HttpClientResponses;
     }
 
     // Interface methods
@@ -42,31 +45,16 @@ namespace GrafanaCli.DevConsole.DevUtils.Clients
       }
 
       var httpResponse = new HttpResponseMessage(response.StatusCode);
+      // var responseBody = GetResponseBody(response);
       await Task.Delay(response.ResponseDelayMs);
-
-      GetResponseBody(response);
 
 
 
       throw new NotImplementedException();
     }
 
-    // Configuration methods
-    public void SetOkResponse(string url, string filePath)
-    {
-      // TODO: [TESTS] (DevGrafanaHttpClient.SetOkResponse) Add tests
-      _responses.Add(new DevHttpClientResponse
-      {
-        ResponseType = DevHttpClientResponseType.File,
-        Url = url,
-        FilePath = filePath,
-        StatusCode = HttpStatusCode.OK,
-        ResponseDelayMs = DevHelper.Random.Next(10, 300)
-      });
-    }
-
     // Internal methods
-    private DevHttpClientResponse GetResponse(HttpRequestMessage requestMessage)
+    private DevHttpResponse GetResponse(HttpRequestMessage requestMessage)
     {
       // TODO: [TESTS] (DevGrafanaHttpClient.GetResponse) Add tests
       var url = requestMessage.RequestUri.OriginalString;
@@ -88,16 +76,29 @@ namespace GrafanaCli.DevConsole.DevUtils.Clients
       return null;
     }
 
-    private void GetResponseBody(DevHttpClientResponse response)
+    private string GetResponseBody(DevHttpResponse response)
     {
       // TODO: [TESTS] (DevGrafanaHttpClient.GetResponseBody) Add tests
-
       if (response.ResponseType == DevHttpClientResponseType.File)
       {
+        if (string.IsNullOrWhiteSpace(response.GeneratedResponseBody))
+        {
+          if (!_file.Exists(response.FilePath))
+          {
+            // TODO: [EX] (DevGrafanaHttpClient.GetResponseBody) Throw better exception here
+            _logger.Error("Unable to find response file: {path}", response.FilePath);
+            throw new Exception($"Unable to find response file: {response.FilePath}");
+          }
 
+          response.GeneratedResponseBody = _file.ReadAllText(response.FilePath);
+          _logger.Trace("Set GeneratedResponseBody using {path}", response.FilePath);
+        }
+
+        return response.GeneratedResponseBody;
       }
 
-
+      // TODO: [COMPLETE] (DevGrafanaHttpClient.GetResponseBody) Complete me
+      return string.Empty;
     }
   }
 }

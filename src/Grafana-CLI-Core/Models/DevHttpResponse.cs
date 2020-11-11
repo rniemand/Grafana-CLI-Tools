@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
-using GrafanaCli.DevConsole.DevUtils.Enums;
+using GrafanaCli.Core.Enums;
 
-namespace GrafanaCli.DevConsole.DevUtils.Models
+namespace GrafanaCli.Core.Models
 {
-  public class DevHttpClientResponse
+  public class DevHttpResponse
   {
     public string Url { get; set; }
     public DevHttpClientResponseType ResponseType { get; set; }
@@ -13,9 +13,9 @@ namespace GrafanaCli.DevConsole.DevUtils.Models
     public int ResponseDelayMs { get; set; }
     public string GeneratedResponseBody { get; set; }
 
-    public DevHttpClientResponse()
+    public DevHttpResponse()
     {
-      // TODO: [TESTS] (DevHttpClientResponse.DevHttpClientResponse) Add tests
+      // TODO: [TESTS] (DevHttpResponse.DevHttpResponse) Add tests
 
       Url = string.Empty;
       ResponseType = DevHttpClientResponseType.Unknown;
@@ -27,7 +27,7 @@ namespace GrafanaCli.DevConsole.DevUtils.Models
 
     public bool ExactUrlMatch(string url)
     {
-      // TODO: [TESTS] (DevHttpClientResponse.ExactUrlMatch) Add tests
+      // TODO: [TESTS] (DevHttpResponse.ExactUrlMatch) Add tests
       return Url.Equals(url, StringComparison.InvariantCultureIgnoreCase);
     }
   }

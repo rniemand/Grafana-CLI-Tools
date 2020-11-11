@@ -8,6 +8,7 @@ using GrafanaCli.Core.Config;
 using GrafanaCli.Core.Logging;
 using GrafanaCli.DevConsole.DevUtils;
 using GrafanaCli.DevConsole.DevUtils.Builders;
+using GrafanaCli.DevConsole.DevUtils.Clients;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,11 +29,15 @@ namespace GrafanaCli.DevConsole
         .WithListAllDashboardsUrl("foobar")
         .Build();
 
-      var grafanaHttpClient = new DevGrafanaHttpClientBuilder()
-        .WithOkResponse("foobar", responseFile)
+      var responsesBuilder = new DevHttpResponsesBuilder()
+        .WithOkResponse("foobar", responseFile);
+
+      var devConfig = new DeveloperConfigBuilder()
+        .AsEnabled()
+        .WithDevHttpClientEnabled(responsesBuilder.Build())
         .Build();
 
-      SetupDIContainer(grafanaUrlBuilder, grafanaHttpClient);
+      SetupDIContainer(grafanaUrlBuilder, devConfig);
 
       var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
       var httpClient = _provider.GetService<IGrafanaHttpClient>();
@@ -55,7 +60,7 @@ namespace GrafanaCli.DevConsole
 
     private static void SetupDIContainer(
       IGrafanaUrlBuilder grafanaUrlBuilder = null,
-      IGrafanaHttpClient grafanaHttpClient = null)
+      DeveloperConfig developerConfig = null)
     {
       var collection = new ServiceCollection();
 
@@ -74,17 +79,20 @@ namespace GrafanaCli.DevConsole
           loggingBuilder.AddNLog(config);
         });
 
-      RegisterGrafanaCliConfig(collection, config);
+      RegisterGrafanaCliConfig(collection, config, developerConfig);
       RegisterGrafanaUrlBuilder(collection, grafanaUrlBuilder);
-      RegisterGrafanaHttpClient(collection, grafanaHttpClient);
+      RegisterGrafanaHttpClient(collection, developerConfig);
 
       _provider = collection.BuildServiceProvider();
     }
 
-    private static void RegisterGrafanaCliConfig(IServiceCollection collection, IConfiguration configuration)
+    private static void RegisterGrafanaCliConfig(IServiceCollection collection, IConfiguration configuration, DeveloperConfig developerConfig)
     {
       var grafanaCliConfig = new GrafanaCliConfig();
+
       configuration.Bind("GrafanaCli", grafanaCliConfig);
+      grafanaCliConfig.DevConfig = developerConfig;
+
       collection.AddSingleton(grafanaCliConfig);
     }
 
@@ -99,11 +107,11 @@ namespace GrafanaCli.DevConsole
       collection.AddSingleton<IGrafanaUrlBuilder, GrafanaUrlBuilder>();
     }
 
-    private static void RegisterGrafanaHttpClient(IServiceCollection collection, IGrafanaHttpClient httpClient = null)
+    private static void RegisterGrafanaHttpClient(IServiceCollection collection, DeveloperConfig developerConfig)
     {
-      if (httpClient != null)
+      if (developerConfig.Enabled && developerConfig.UseDevHttpClient)
       {
-        collection.AddSingleton(httpClient);
+        collection.AddSingleton<IGrafanaHttpClient, DevGrafanaHttpClient>();
         return;
       }
 

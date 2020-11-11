@@ -9,6 +9,7 @@ namespace GrafanaCli.Core.Logging
     void Debug(string message, params object[] args);
     void Information(string message, params object[] args);
     void Warning(string message, params object[] args);
+    void Error(string message, params object[] args);
     void Error(Exception ex, string message, params object[] args);
   }
 
@@ -39,6 +40,11 @@ namespace GrafanaCli.Core.Logging
     public void Warning(string message, params object[] args)
     {
       _logger.LogWarning(message, args);
+    }
+
+    public void Error(string message, params object[] args)
+    {
+      _logger.LogError(message, args);
     }
 
     public void Error(Exception ex, string message, params object[] args)

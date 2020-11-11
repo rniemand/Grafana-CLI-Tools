@@ -1,4 +1,4 @@
-﻿namespace GrafanaCli.DevConsole.DevUtils.Enums
+﻿namespace GrafanaCli.Core.Enums
 {
   public enum DevHttpClientResponseType
   {
