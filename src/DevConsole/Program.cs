@@ -20,8 +20,6 @@ namespace GrafanaCli.DevConsole
 
     static void Main(string[] args)
     {
-      SetupDIContainer();
-
       var pathBuilder = new DevDataPathBuilder();
       var responseFile = pathBuilder.ResponseFile("search.dashboards.all.success");
 
@@ -29,10 +27,13 @@ namespace GrafanaCli.DevConsole
         .WithListAllDashboardsUrl("foobar")
         .Build();
 
-      var dashboards = devGrafanaUrlBuilder.ListAllDashboards();
 
-      //var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
+      SetupDIContainer(devGrafanaUrlBuilder);
+
+      var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
       //var httpClient = _provider.GetService<IGrafanaHttpClient>();
+
+      var listAllDashboards = urlBuilder.ListAllDashboards();
 
       //var request = new HttpRequestMessage(HttpMethod.Get, urlBuilder.ListAllDashboards());
 
@@ -50,7 +51,8 @@ namespace GrafanaCli.DevConsole
       Console.WriteLine("Hello World!");
     }
 
-    private static void SetupDIContainer()
+    private static void SetupDIContainer(
+      IGrafanaUrlBuilder grafanaUrlBuilder = null)
     {
       var collection = new ServiceCollection();
 
@@ -59,12 +61,7 @@ namespace GrafanaCli.DevConsole
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
         .Build();
 
-      var grafanaCliConfig = new GrafanaCliConfig();
-      config.Bind("GrafanaCli", grafanaCliConfig);
-
       collection
-        .AddSingleton(grafanaCliConfig)
-        .AddSingleton<IGrafanaUrlBuilder, GrafanaUrlBuilder>()
         .AddSingleton<IGrafanaHttpClient, GrafanaHttpClient>()
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
         .AddLogging(loggingBuilder =>
@@ -74,7 +71,28 @@ namespace GrafanaCli.DevConsole
           loggingBuilder.AddNLog(config);
         });
 
+      RegisterGrafanaCliConfig(collection, config);
+      RegisterGrafanaUrlBuilder(collection, grafanaUrlBuilder);
+
       _provider = collection.BuildServiceProvider();
+    }
+
+    private static void RegisterGrafanaCliConfig(IServiceCollection collection, IConfiguration configuration)
+    {
+      var grafanaCliConfig = new GrafanaCliConfig();
+      configuration.Bind("GrafanaCli", grafanaCliConfig);
+      collection.AddSingleton(grafanaCliConfig);
+    }
+
+    private static void RegisterGrafanaUrlBuilder(IServiceCollection collection, IGrafanaUrlBuilder builder = null)
+    {
+      if (builder != null)
+      {
+        collection.AddSingleton(builder);
+        return;
+      }
+
+      collection.AddSingleton<IGrafanaUrlBuilder, GrafanaUrlBuilder>();
     }
   }
 }
