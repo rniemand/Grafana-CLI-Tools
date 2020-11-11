@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
+using GrafanaCli.Core.Builders;
+using GrafanaCli.Core.Clients;
 using GrafanaCli.Core.Config;
 using GrafanaCli.Core.Logging;
 using Microsoft.Extensions.Configuration;
@@ -17,8 +20,16 @@ namespace GrafanaCli.DevConsole
     {
       SetupDIContainer();
 
-      _provider.GetService<ILoggerAdapter<Program>>().LogTrace("Hello World");
-      var config = _provider.GetService<GrafanaCliConfig>();
+      var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
+      var httpClient = _provider.GetService<IGrafanaHttpClient>();
+
+      var request = new HttpRequestMessage(HttpMethod.Get, urlBuilder.ListAllDashboards());
+
+      var response = httpClient.SendAsync(request)
+        .ConfigureAwait(false)
+        .GetAwaiter()
+        .GetResult();
+
 
       Console.WriteLine("Hello World!");
     }
@@ -37,6 +48,8 @@ namespace GrafanaCli.DevConsole
 
       collection
         .AddSingleton(grafanaCliConfig)
+        .AddSingleton<IGrafanaUrlBuilder, GrafanaUrlBuilder>()
+        .AddSingleton<IGrafanaHttpClient, GrafanaHttpClient>()
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
         .AddLogging(loggingBuilder =>
         {
