@@ -16,9 +16,9 @@ namespace GrafanaCli.DevConsole.DevUtils.Builders
     }
 
     // Interface methods
-    public string ListAllDashboards()
+    public string ListAllDashboards(string query, int limit, int page)
     {
-      // TODO: [TESTS] (DevGrafanaUrlBuilder.ListAllDashboards) Add tests
+      // TODO: [TESTS] (DevGrafanaUrlBuilder.SearchDashboards) Add tests
 
       if (_returnUrls.ContainsKey(nameof(ListAllDashboards)))
         return _returnUrls[nameof(ListAllDashboards)];

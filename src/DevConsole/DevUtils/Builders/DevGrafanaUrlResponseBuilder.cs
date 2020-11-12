@@ -11,10 +11,10 @@ namespace GrafanaCli.DevConsole.DevUtils.Builders
       _urls = new Dictionary<string, string>();
     }
 
-    public DevGrafanaUrlResponseBuilder WithListAllDashboards(string url)
+    public DevGrafanaUrlResponseBuilder WithSearchDashboards(string url)
     {
-      // TODO: [TESTS] (DevGrafanaUrlResponseBuilder.WithListAllDashboards) Add tests
-      _urls["ListAllDashboards"] = url;
+      // TODO: [TESTS] (DevGrafanaUrlResponseBuilder.WithSearchDashboards) Add tests
+      _urls["SearchDashboards"] = url;
       return this;
     }
 

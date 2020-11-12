@@ -25,7 +25,7 @@ namespace GrafanaCli.DevConsole
       var pathBuilder = new DevDataPathBuilder();
 
       var devUrls = new DevGrafanaUrlResponseBuilder()
-        .WithListAllDashboards("foobar");
+        .WithSearchDashboards("foobar");
 
       var devResponses = new DevHttpResponsesBuilder()
         .WithOkJsonResponse("foobar", pathBuilder.ResponseFile("search.dashboards.all.success"));
@@ -35,11 +35,13 @@ namespace GrafanaCli.DevConsole
         //.WithGrafanaUrlBuilder(devUrls.Build())
         .Build());
 
-
-      _provider.GetService<IGrafanaClient>().ListAllDashboards()
+      var dashboards = _provider.GetService<IGrafanaClient>().SearchDashboards("hass")
         .ConfigureAwait(false)
         .GetAwaiter()
         .GetResult();
+
+
+
     }
 
     private static void SetupDIContainer(DeveloperConfig developerConfig = null)
@@ -57,6 +59,7 @@ namespace GrafanaCli.DevConsole
       collection
         .AddSingleton<IFile, FileAbstraction>()
         .AddSingleton<IGrafanaClient, GrafanaClient>()
+        .AddSingleton<IJsonAbstraction, JsonAbstraction>()
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
         .AddLogging(loggingBuilder =>
         {

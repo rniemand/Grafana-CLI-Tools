@@ -6,7 +6,7 @@ namespace GrafanaCli.Core.Builders
 {
   public interface IGrafanaUrlBuilder
   {
-    string ListAllDashboards();
+    string ListAllDashboards(string query, int limit, int page);
   }
 
   public class GrafanaUrlBuilder : IGrafanaUrlBuilder
@@ -27,12 +27,16 @@ namespace GrafanaCli.Core.Builders
       _logger.Trace("Base URL set to: {url}", _baseUrl);
     }
 
-    public string ListAllDashboards()
+    public string ListAllDashboards(string query, int limit, int page)
     {
-      // TODO: [TESTS] (GrafanaUrlBuilder.ListAllDashboards) Add tests
-      // TODO: [COMPLETE] (GrafanaUrlBuilder.ListAllDashboards) Add support for pagination
+      // TODO: [TESTS] (GrafanaUrlBuilder.SearchDashboards) Add tests
+      var url = new UrlBuilder($"{_baseUrl}api/search")
+        .WithParam("query", query)
+        .WithParam("type", "dash-db")
+        .WithParam("limit", limit)
+        .WithParam("page", page)
+        .Build();
 
-      var url = $"{_baseUrl}api/search?type=dash-db";
       _logger.Trace("Search URL: {url}", url);
       return url;
     }
