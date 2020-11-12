@@ -25,19 +25,18 @@ namespace GrafanaCli.DevConsole
       var pathBuilder = new DevDataPathBuilder();
       var responseFile = pathBuilder.ResponseFile("search.dashboards.all.success");
 
-      var grafanaUrlBuilder = new DevGrafanaUrlBuilderBuilder()
-        .WithListAllDashboardsUrl("foobar")
-        .Build();
+      var grafanaUrlBuilder = new DevGrafanaUrlResponseBuilder()
+        .WithListAllDashboards("foobar");
 
       var responsesBuilder = new DevHttpResponsesBuilder()
         .WithOkJsonResponse("foobar", responseFile);
 
       var devConfig = new DeveloperConfigBuilder()
-        .AsEnabled()
-        .WithDevHttpClientEnabled(responsesBuilder.Build())
+        .WithDevHttpClient(responsesBuilder.Build())
+        .WithGrafanaUrlBuilder(grafanaUrlBuilder.Build())
         .Build();
 
-      SetupDIContainer(grafanaUrlBuilder, devConfig);
+      SetupDIContainer(devConfig);
 
       var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
       var httpClient = _provider.GetService<IGrafanaHttpClient>();
@@ -58,11 +57,12 @@ namespace GrafanaCli.DevConsole
       Console.WriteLine("Hello World!");
     }
 
-    private static void SetupDIContainer(
-      IGrafanaUrlBuilder grafanaUrlBuilder = null,
-      DeveloperConfig developerConfig = null)
+    private static void SetupDIContainer(DeveloperConfig developerConfig = null)
     {
       var collection = new ServiceCollection();
+
+      if (developerConfig == null)
+        developerConfig = new DeveloperConfig();
 
       var config = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
@@ -80,7 +80,7 @@ namespace GrafanaCli.DevConsole
         });
 
       RegisterGrafanaCliConfig(collection, config, developerConfig);
-      RegisterGrafanaUrlBuilder(collection, grafanaUrlBuilder);
+      RegisterGrafanaUrlBuilder(collection, developerConfig);
       RegisterGrafanaHttpClient(collection, developerConfig);
 
       _provider = collection.BuildServiceProvider();
@@ -96,11 +96,11 @@ namespace GrafanaCli.DevConsole
       collection.AddSingleton(grafanaCliConfig);
     }
 
-    private static void RegisterGrafanaUrlBuilder(IServiceCollection collection, IGrafanaUrlBuilder builder = null)
+    private static void RegisterGrafanaUrlBuilder(IServiceCollection collection, DeveloperConfig developerConfig)
     {
-      if (builder != null)
+      if (developerConfig.Enabled && developerConfig.UseDevGrafanaUrlBuilder)
       {
-        collection.AddSingleton(builder);
+        collection.AddSingleton<IGrafanaUrlBuilder, DevGrafanaUrlBuilder>();
         return;
       }
 

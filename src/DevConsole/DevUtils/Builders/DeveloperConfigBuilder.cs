@@ -13,22 +13,20 @@ namespace GrafanaCli.DevConsole.DevUtils.Builders
       _config = new DeveloperConfig();
     }
 
-    public DeveloperConfigBuilder AsEnabled()
+    public DeveloperConfigBuilder WithDevHttpClient(List<DevHttpResponse> responses = null)
     {
       _config.Enabled = true;
+      _config.UseDevHttpClient = true;
+      _config.HttpClientResponses = responses ?? new List<DevHttpResponse>();
       return this;
     }
 
-    public DeveloperConfigBuilder WithDevHttpClientEnabled(List<DevHttpResponse> responses = null)
+    public DeveloperConfigBuilder WithGrafanaUrlBuilder(Dictionary<string, string> urls = null)
     {
-      _config.UseDevHttpClient = true;
-
-      return responses?.Count > 0 ? WithHttpClientResponses(responses) : this;
-    }
-
-    public DeveloperConfigBuilder WithHttpClientResponses(List<DevHttpResponse> responses)
-    {
-      _config.HttpClientResponses = responses;
+      // TODO: [TESTS] (DeveloperConfigBuilder.With) Add tests
+      _config.Enabled = true;
+      _config.UseDevGrafanaUrlBuilder = true;
+      _config.UrlBuilderConfig = urls ?? new Dictionary<string, string>();
       return this;
     }
 

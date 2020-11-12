@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GrafanaCli.Core.Builders;
+using GrafanaCli.Core.Config;
 
 namespace GrafanaCli.DevConsole.DevUtils.Builders
 {
@@ -8,11 +9,10 @@ namespace GrafanaCli.DevConsole.DevUtils.Builders
   {
     private readonly Dictionary<string, string> _returnUrls;
 
-    public DevGrafanaUrlBuilder()
+    public DevGrafanaUrlBuilder(GrafanaCliConfig config)
     {
       // TODO: [TESTS] (DevGrafanaUrlBuilder.DevGrafanaUrlBuilder) Add tests
-
-      _returnUrls = new Dictionary<string, string>();
+      _returnUrls = config.DevConfig.UrlBuilderConfig;
     }
 
     // Interface methods
@@ -24,13 +24,6 @@ namespace GrafanaCli.DevConsole.DevUtils.Builders
         return _returnUrls[nameof(ListAllDashboards)];
 
       throw new Exception("No URL override configured");
-    }
-
-    // Configuration methods
-    public void SetReturnUrl(string methodName, string url)
-    {
-      // TODO: [TESTS] (DevGrafanaUrlBuilder.SetReturnUrl) Add tests
-      _returnUrls[methodName] = url;
     }
   }
 }
