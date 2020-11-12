@@ -23,38 +23,23 @@ namespace GrafanaCli.DevConsole
     static void Main(string[] args)
     {
       var pathBuilder = new DevDataPathBuilder();
-      var responseFile = pathBuilder.ResponseFile("search.dashboards.all.success");
 
-      var grafanaUrlBuilder = new DevGrafanaUrlResponseBuilder()
+      var devUrls = new DevGrafanaUrlResponseBuilder()
         .WithListAllDashboards("foobar");
 
-      var responsesBuilder = new DevHttpResponsesBuilder()
-        .WithOkJsonResponse("foobar", responseFile);
+      var devResponses = new DevHttpResponsesBuilder()
+        .WithOkJsonResponse("foobar", pathBuilder.ResponseFile("search.dashboards.all.success"));
 
-      var devConfig = new DeveloperConfigBuilder()
-        .WithDevHttpClient(responsesBuilder.Build())
-        .WithGrafanaUrlBuilder(grafanaUrlBuilder.Build())
-        .Build();
+      SetupDIContainer(new DeveloperConfigBuilder()
+        .WithDevHttpClient(devResponses.Build())
+        .WithGrafanaUrlBuilder(devUrls.Build())
+        .Build());
 
-      SetupDIContainer(devConfig);
 
-      var urlBuilder = _provider.GetService<IGrafanaUrlBuilder>();
-      var httpClient = _provider.GetService<IGrafanaHttpClient>();
-
-      var request = new HttpRequestMessage(HttpMethod.Get, urlBuilder.ListAllDashboards());
-
-      var response = httpClient.SendAsync(request)
+      _provider.GetService<IGrafanaClient>().ListAllDashboards()
         .ConfigureAwait(false)
         .GetAwaiter()
         .GetResult();
-
-      var responseString = response.Content.ReadAsStringAsync()
-        .ConfigureAwait(false)
-        .GetAwaiter()
-        .GetResult();
-
-
-      Console.WriteLine("Hello World!");
     }
 
     private static void SetupDIContainer(DeveloperConfig developerConfig = null)
@@ -71,6 +56,7 @@ namespace GrafanaCli.DevConsole
 
       collection
         .AddSingleton<IFile, FileAbstraction>()
+        .AddSingleton<IGrafanaClient, GrafanaClient>()
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
         .AddLogging(loggingBuilder =>
         {
