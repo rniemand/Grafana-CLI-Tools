@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using GrafanaCli.Core.Abstractions;
 using GrafanaCli.Core.Builders;
@@ -35,13 +36,19 @@ namespace GrafanaCli.DevConsole
         //.WithGrafanaUrlBuilder(devUrls.Build())
         .Build());
 
-      var dashboards = _provider.GetService<IGrafanaClient>().SearchDashboards("hass")
+      var grafanaClient = _provider.GetService<IGrafanaClient>();
+
+      var dashboards = grafanaClient.SearchDashboards("hass")
         .ConfigureAwait(false)
         .GetAwaiter()
         .GetResult();
 
+      var hassDashboard = dashboards.First();
 
-
+      grafanaClient.GetDashboard(hassDashboard.Uid)
+        .ConfigureAwait(false)
+        .GetAwaiter()
+        .GetResult();
     }
 
     private static void SetupDIContainer(DeveloperConfig developerConfig = null)

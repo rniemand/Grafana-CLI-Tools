@@ -12,6 +12,7 @@ namespace GrafanaCli.Core.Clients
   public interface IGrafanaClient
   {
     Task<List<SearchResponse>> SearchDashboards(string query);
+    Task GetDashboard(string uid);
   }
 
   public class GrafanaClient : IGrafanaClient
@@ -72,6 +73,21 @@ namespace GrafanaCli.Core.Clients
       }
 
       return allResults;
+    }
+
+    public async Task GetDashboard(string uid)
+    {
+      // TODO: [TESTS] (GrafanaClient.GetDashboard) Add tests
+
+      var dashboardUrl = _urlBuilder.GetDashboard(uid);
+      var request = new HttpRequestMessage(HttpMethod.Get, dashboardUrl);
+      var response = await _httpClient.SendAsync(request);
+      response.EnsureSuccessStatusCode();
+      var responseBody = await response.Content.ReadAsStringAsync();
+
+      var dashboard = _jsonAbstraction.DeserializeObject<GrafanaDashboardInfo>(responseBody);
+
+
     }
   }
 }

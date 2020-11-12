@@ -19,9 +19,17 @@ namespace GrafanaCli.DevConsole.DevUtils.Builders
     public string ListAllDashboards(string query, int limit, int page)
     {
       // TODO: [TESTS] (DevGrafanaUrlBuilder.SearchDashboards) Add tests
-
       if (_returnUrls.ContainsKey(nameof(ListAllDashboards)))
         return _returnUrls[nameof(ListAllDashboards)];
+
+      throw new Exception("No URL override configured");
+    }
+
+    public string GetDashboard(string uid)
+    {
+      // TODO: [TESTS] (DevGrafanaUrlBuilder.GetDashboard) Add tests
+      if (_returnUrls.ContainsKey(nameof(GetDashboard)))
+        return _returnUrls[nameof(GetDashboard)];
 
       throw new Exception("No URL override configured");
     }

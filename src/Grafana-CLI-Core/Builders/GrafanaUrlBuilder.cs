@@ -7,6 +7,7 @@ namespace GrafanaCli.Core.Builders
   public interface IGrafanaUrlBuilder
   {
     string ListAllDashboards(string query, int limit, int page);
+    string GetDashboard(string uid);
   }
 
   public class GrafanaUrlBuilder : IGrafanaUrlBuilder
@@ -38,6 +39,14 @@ namespace GrafanaCli.Core.Builders
         .Build();
 
       _logger.Trace("Search URL: {url}", url);
+      return url;
+    }
+
+    public string GetDashboard(string uid)
+    {
+      // TODO: [TESTS] (GrafanaUrlBuilder.GetDashboard) Add tests
+      var url = $"{_baseUrl}api/dashboards/uid/{uid}";
+      _logger.Trace("Dashboard by UID: {url}", url);
       return url;
     }
   }
