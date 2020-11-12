@@ -9,10 +9,10 @@
     "url": "/d/FJ1QoehGz/hass-sample",
     "expires": "0001-01-01T00:00:00Z",
     "created": "2020-11-11T22:41:32Z",
-    "updated": "2020-11-12T04:28:15Z",
+    "updated": "2020-11-12T04:36:14Z",
     "updatedBy": "admin",
     "createdBy": "admin",
-    "version": 8,
+    "version": 10,
     "hasAcl": false,
     "isFolder": false,
     "folderId": 0,
@@ -52,7 +52,7 @@
     "description": "Hello World Description",
     "editable": true,
     "gnetId": null,
-    "graphTooltip": 0,
+    "graphTooltip": 1,
     "id": 3,
     "links": [
       {
@@ -340,7 +340,86 @@
     "schemaVersion": 26,
     "style": "dark",
     "tags": [ "tag1", "tag2" ],
-    "templating": { "list": [] },
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "Bob",
+            "value": "Bob"
+          },
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "Test",
+          "options": [
+            {
+              "selected": true,
+              "text": "Bob",
+              "value": "Bob"
+            }
+          ],
+          "query": "Bob",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "kelsie_pixel2_mobile_rx_gb",
+            "value": "kelsie_pixel2_mobile_rx_gb"
+          },
+          "datasource": "HASS",
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "SamIsNotListening",
+          "options": [],
+          "query": "SHOW TAG VALUES FROM \"GB\" WITH KEY = \"entity_id\"",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": "All",
+          "current": {
+            "selected": true,
+            "text": [ "kelsie_pixel2_mobile_rx_gb" ],
+            "value": [ "kelsie_pixel2_mobile_rx_gb" ]
+          },
+          "datasource": "HASS",
+          "error": null,
+          "hide": 1,
+          "includeAll": true,
+          "label": "label",
+          "multi": true,
+          "name": "Another",
+          "options": [],
+          "query": "SHOW TAG VALUES FROM \"GB\" WITH KEY = \"entity_id\"",
+          "refresh": 1,
+          "regex": "/.*/",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
     "time": {
       "from": "now-6h",
       "to": "now"
@@ -349,6 +428,6 @@
     "timezone": "",
     "title": "Hass Sample",
     "uid": "FJ1QoehGz",
-    "version": 8
+    "version": 10
   }
 }
