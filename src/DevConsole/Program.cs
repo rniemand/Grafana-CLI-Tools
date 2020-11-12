@@ -31,8 +31,8 @@ namespace GrafanaCli.DevConsole
         .WithOkJsonResponse("foobar", pathBuilder.ResponseFile("search.dashboards.all.success"));
 
       SetupDIContainer(new DeveloperConfigBuilder()
-        .WithDevHttpClient(devResponses.Build())
-        .WithGrafanaUrlBuilder(devUrls.Build())
+        //.WithDevHttpClient(devResponses.Build())
+        //.WithGrafanaUrlBuilder(devUrls.Build())
         .Build());
 
 

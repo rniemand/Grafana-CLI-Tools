@@ -18,7 +18,7 @@
     "url": "/d/XmtJpe2Gz/dashboard-2",
     "slug": "",
     "type": "dash-db",
-    "tags": [],
+    "tags": [ "core" ],
     "isStarred": false
   },
   {
@@ -40,7 +40,7 @@
     "url": "/d/-VlQTehGz/whatever",
     "slug": "",
     "type": "dash-db",
-    "tags": [],
+    "tags": [ "tag1" ],
     "isStarred": false
   }
 ]
