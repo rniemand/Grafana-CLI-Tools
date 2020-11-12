@@ -10,80 +10,60 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
 
     [JsonProperty("dashboard"), JsonPropertyName("dashboard")]
     public Dashboard Dashboard { get; set; }
+
+    public GrafanaDashboardInfo()
+    {
+      // TODO: [TESTS] (GrafanaDashboardInfo.GrafanaDashboardInfo) Add tests
+      Meta = new GrafanaMetadata();
+      Dashboard = new Dashboard();
+    }
   }
 
-  public class Dashboard
+  public class DashboardLink
   {
-    [JsonProperty("annotations"), JsonPropertyName("annotations")]
-    public DashboardAnnotations Annotations { get; set; }
+    [JsonProperty("asDropdown"), JsonPropertyName("asDropdown")]
+    public bool AsDropdown { get; set; }
 
-    [JsonProperty("editable"), JsonPropertyName("editable")]
-    public bool Editable { get; set; }
+    [JsonProperty("icon"), JsonPropertyName("icon")]
+    public string Icon { get; set; }
 
-    // TODO: [COMPLETE] (Dashboard.gnetId) Complete me
-    public object gnetId { get; set; }
+    [JsonProperty("includeVars"), JsonPropertyName("includeVars")]
+    public bool IncludeVars { get; set; }
 
-    [JsonProperty("graphTooltip"), JsonPropertyName("graphTooltip")]
-    public int GraphTooltip { get; set; }
+    [JsonProperty("keepTime"), JsonPropertyName("keepTime")]
+    public bool KeepTime { get; set; }
 
-    [JsonProperty("id"), JsonPropertyName("id")]
-    public int Id { get; set; }
-
-    // TODO: [COMPLETE] (Dashboard.links) Complete me
-    public object[] links { get; set; }
-
-    [JsonProperty("panels"), JsonPropertyName("panels")]
-    public Panel[] Panels { get; set; }
-
-    [JsonProperty("schemaVersion"), JsonPropertyName("schemaVersion")]
-    public int SchemaVersion { get; set; }
-
-    [JsonProperty("style"), JsonPropertyName("style")]
-    public string Style { get; set; }
-
-    // TODO: [COMPLETE] (Dashboard.tags) Complete porting
     [JsonProperty("tags"), JsonPropertyName("tags")]
-    public object[] Tags { get; set; }
+    public string[] Tags { get; set; }
 
-    [JsonProperty("templating"), JsonPropertyName("templating")]
-    public Templating Templating { get; set; }
-
-    [JsonProperty("time"), JsonPropertyName("time")]
-    public Time Time { get; set; }
-
-    [JsonProperty("timepicker"), JsonPropertyName("timepicker")]
-    public TimePicker TimePicker { get; set; }
-
-    [JsonProperty("timezone"), JsonPropertyName("timezone")]
-    public string Timezone { get; set; }
+    [JsonProperty("targetBlank"), JsonPropertyName("targetBlank")]
+    public bool TargetBlank { get; set; }
 
     [JsonProperty("title"), JsonPropertyName("title")]
     public string Title { get; set; }
 
-    [JsonProperty("uid"), JsonPropertyName("uid")]
-    public string Uid { get; set; }
+    [JsonProperty("type"), JsonPropertyName("type")]
+    public string Type { get; set; }
 
-    [JsonProperty("version"), JsonPropertyName("version")]
-    public int Version { get; set; }
+    [JsonProperty("tooltip"), JsonPropertyName("tooltip")]
+    public string Tooltip { get; set; }
 
-    public Dashboard()
+    [JsonProperty("url"), JsonPropertyName("url")]
+    public string Url { get; set; }
+
+    public DashboardLink()
     {
-      // TODO: [TESTS] (Dashboard.Dashboard) Add tests
-      Annotations = new DashboardAnnotations();
-      Editable = false;
-      GraphTooltip = 0;
-      Id = 0;
-      Panels = new Panel[0];
-      SchemaVersion = 0;
-      Style = string.Empty;
-      Tags = new object[0];
-      Templating = new Templating();
-      Time = new Time();
-      TimePicker = new TimePicker();
-      Timezone = string.Empty;
+      // TODO: [TESTS] (DashboardLink.DashboardLink) Add tests
+      AsDropdown = false;
+      Icon = string.Empty;
+      IncludeVars = false;
+      KeepTime = false;
+      Tags = new string[0];
+      TargetBlank = false;
       Title = string.Empty;
-      Uid = string.Empty;
-      Version = 0;
+      Type = string.Empty;
+      Tooltip = string.Empty;
+      Url = string.Empty;
     }
   }
 
@@ -300,7 +280,7 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
       // TODO: [TESTS] (Fieldconfig.Fieldconfig) Add tests
       // TODO: [COMPLETE] (Fieldconfig.Fieldconfig) Complete porting
       Defaults = new Defaults();
-      Overrides = new object [0];
+      Overrides = new object[0];
     }
   }
 
@@ -505,7 +485,7 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
       RawQuery = false;
       RefId = string.Empty;
       ResultFormat = string.Empty;
-      Select = new Select[][0];
+      Select = new Select[0][];
       Tags = new Tag[0];
     }
   }

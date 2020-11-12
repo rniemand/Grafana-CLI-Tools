@@ -9,10 +9,10 @@
     "url": "/d/FJ1QoehGz/hass-sample",
     "expires": "0001-01-01T00:00:00Z",
     "created": "2020-11-11T22:41:32Z",
-    "updated": "2020-11-12T03:03:08Z",
+    "updated": "2020-11-12T04:28:15Z",
     "updatedBy": "admin",
     "createdBy": "admin",
-    "version": 5,
+    "version": 8,
     "hasAcl": false,
     "isFolder": false,
     "folderId": 0,
@@ -30,7 +30,7 @@
           "enable": true,
           "hide": true,
           "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
+          "name": "Annotations \u0026 Alerts",
           "type": "dashboard"
         },
         {
@@ -49,11 +49,48 @@
         }
       ]
     },
+    "description": "Hello World Description",
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
     "id": 3,
-    "links": [],
+    "links": [
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [ "tag1", "tag2" ],
+        "targetBlank": true,
+        "title": "Hello Dropdown",
+        "type": "dashboards"
+      },
+      {
+        "icon": "dashboard",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Open me",
+        "tooltip": "Tooltip Vibe",
+        "type": "link",
+        "url": "https://grafana.com/docs/grafana/latest/http_api/"
+      },
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "keepTime": true,
+        "tags": [ "Whoops" ],
+        "title": "Dropdown",
+        "type": "dashboards"
+      },
+      {
+        "icon": "external link",
+        "tags": [ "Hi" ],
+        "targetBlank": true,
+        "type": "dashboards"
+      }
+    ],
     "panels": [
       {
         "aliasColors": {},
@@ -62,9 +99,7 @@
         "dashes": false,
         "datasource": "HASS",
         "fieldConfig": {
-          "defaults": {
-            "custom": {}
-          },
+          "defaults": { "custom": {} },
           "overrides": []
         },
         "fill": 1,
@@ -89,9 +124,7 @@
         "lines": true,
         "linewidth": 1,
         "nullPointMode": "null",
-        "options": {
-          "alertThreshold": true
-        },
+        "options": { "alertThreshold": true },
         "percentage": false,
         "pluginVersion": "7.3.1",
         "pointradius": 2,
@@ -105,15 +138,11 @@
           {
             "groupBy": [
               {
-                "params": [
-                  "$__interval"
-                ],
+                "params": [ "$__interval" ],
                 "type": "time"
               },
               {
-                "params": [
-                  "none"
-                ],
+                "params": [ "none" ],
                 "type": "fill"
               }
             ],
@@ -127,9 +156,7 @@
             "select": [
               [
                 {
-                  "params": [
-                    "value"
-                  ],
+                  "params": [ "value" ],
                   "type": "field"
                 },
                 {
@@ -195,9 +222,7 @@
         "dashes": false,
         "datasource": "InfluxDB",
         "fieldConfig": {
-          "defaults": {
-            "custom": {}
-          },
+          "defaults": { "custom": {} },
           "overrides": []
         },
         "fill": 1,
@@ -222,9 +247,7 @@
         "lines": true,
         "linewidth": 1,
         "nullPointMode": "null",
-        "options": {
-          "alertThreshold": true
-        },
+        "options": { "alertThreshold": true },
         "percentage": false,
         "pluginVersion": "7.3.1",
         "pointradius": 2,
@@ -238,15 +261,11 @@
           {
             "groupBy": [
               {
-                "params": [
-                  "$__interval"
-                ],
+                "params": [ "$__interval" ],
                 "type": "time"
               },
               {
-                "params": [
-                  "null"
-                ],
+                "params": [ "null" ],
                 "type": "fill"
               }
             ],
@@ -258,9 +277,7 @@
             "select": [
               [
                 {
-                  "params": [
-                    "Percent_Privileged_Time"
-                  ],
+                  "params": [ "Percent_Privileged_Time" ],
                   "type": "field"
                 },
                 {
@@ -322,10 +339,8 @@
     ],
     "schemaVersion": 26,
     "style": "dark",
-    "tags": [],
-    "templating": {
-      "list": []
-    },
+    "tags": [ "tag1", "tag2" ],
+    "templating": { "list": [] },
     "time": {
       "from": "now-6h",
       "to": "now"
@@ -334,6 +349,6 @@
     "timezone": "",
     "title": "Hass Sample",
     "uid": "FJ1QoehGz",
-    "version": 5
+    "version": 8
   }
 }
