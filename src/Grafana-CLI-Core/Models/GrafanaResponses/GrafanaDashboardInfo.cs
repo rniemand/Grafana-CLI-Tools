@@ -34,16 +34,37 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
 
     [JsonProperty("panels"), JsonPropertyName("panels")]
     public Panel[] Panels { get; set; }
-    public int schemaVersion { get; set; }
-    public string style { get; set; }
-    public object[] tags { get; set; }
-    public Templating templating { get; set; }
-    public Time time { get; set; }
-    public Timepicker timepicker { get; set; }
-    public string timezone { get; set; }
-    public string title { get; set; }
-    public string uid { get; set; }
-    public int version { get; set; }
+
+    [JsonProperty("schemaVersion"), JsonPropertyName("schemaVersion")]
+    public int SchemaVersion { get; set; }
+
+    [JsonProperty("style"), JsonPropertyName("style")]
+    public string Style { get; set; }
+
+    // TODO: [COMPLETE] (Dashboard.tags) Complete porting
+    [JsonProperty("tags"), JsonPropertyName("tags")]
+    public object[] Tags { get; set; }
+
+    [JsonProperty("templating"), JsonPropertyName("templating")]
+    public Templating Templating { get; set; }
+
+    [JsonProperty("time"), JsonPropertyName("time")]
+    public Time Time { get; set; }
+
+    [JsonProperty("timepicker"), JsonPropertyName("timepicker")]
+    public TimePicker TimePicker { get; set; }
+
+    [JsonProperty("timezone"), JsonPropertyName("timezone")]
+    public string Timezone { get; set; }
+
+    [JsonProperty("title"), JsonPropertyName("title")]
+    public string Title { get; set; }
+
+    [JsonProperty("uid"), JsonPropertyName("uid")]
+    public string Uid { get; set; }
+
+    [JsonProperty("version"), JsonPropertyName("version")]
+    public int Version { get; set; }
 
     public Dashboard()
     {
@@ -53,6 +74,16 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
       GraphTooltip = 0;
       Id = 0;
       Panels = new Panel[0];
+      SchemaVersion = 0;
+      Style = string.Empty;
+      Tags = new object[0];
+      Templating = new Templating();
+      Time = new Time();
+      TimePicker = new TimePicker();
+      Timezone = string.Empty;
+      Title = string.Empty;
+      Uid = string.Empty;
+      Version = 0;
     }
   }
 
@@ -62,27 +93,44 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
     public DashboardAnnotation[] List { get; set; }
   }
 
-
-
   public class Templating
   {
-    public object[] list { get; set; }
+    // TODO: [COMPLETE] (Templating.list) Complete porting
+    [JsonProperty("list"), JsonPropertyName("list")]
+    public object[] List { get; set; }
+
+    public Templating()
+    {
+      // TODO: [TESTS] (Templating.Templating) Add tests
+      List = new object[0];
+    }
   }
 
   public class Time
   {
-    public string from { get; set; }
-    public string to { get; set; }
+    [JsonProperty("from"), JsonPropertyName("from")]
+    public string From { get; set; }
+
+    [JsonProperty("to"), JsonPropertyName("to")]
+    public string To { get; set; }
+
+    public Time()
+    {
+      // TODO: [TESTS] (Time.Time) Add tests
+      From = string.Empty;
+      To = string.Empty;
+    }
   }
 
-  public class Timepicker
+  public class TimePicker
   {
+    // TODO: [COMPLETE] (Timepicker) Complete porting
   }
 
   public class Panel
   {
     [JsonProperty("aliasColors"), JsonPropertyName("aliasColors")]
-    public Aliascolors AliasColors { get; set; }
+    public AliasColors AliasColors { get; set; }
 
     [JsonProperty("bars"), JsonPropertyName("bars")]
     public bool Bars { get; set; }
@@ -97,56 +145,149 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
     public string Datasource { get; set; }
 
     [JsonProperty("fieldConfig"), JsonPropertyName("fieldConfig")]
-    public Fieldconfig FieldConfig { get; set; }
+    public FieldConfig FieldConfig { get; set; }
 
-    public int fill { get; set; }
-    public int fillGradient { get; set; }
-    public Gridpos gridPos { get; set; }
-    public bool hiddenSeries { get; set; }
-    public int id { get; set; }
-    public Legend legend { get; set; }
-    public bool lines { get; set; }
-    public int linewidth { get; set; }
-    public string nullPointMode { get; set; }
-    public Options options { get; set; }
-    public bool percentage { get; set; }
-    public string pluginVersion { get; set; }
-    public int pointradius { get; set; }
-    public bool points { get; set; }
-    public string renderer { get; set; }
-    public object[] seriesOverrides { get; set; }
-    public int spaceLength { get; set; }
-    public bool stack { get; set; }
-    public bool steppedLine { get; set; }
-    public Target[] targets { get; set; }
-    public object[] thresholds { get; set; }
-    public object timeFrom { get; set; }
-    public object[] timeRegions { get; set; }
-    public object timeShift { get; set; }
-    public string title { get; set; }
-    public Tooltip tooltip { get; set; }
-    public string type { get; set; }
-    public Xaxis xaxis { get; set; }
-    public Yax[] yaxes { get; set; }
-    public Yaxis yaxis { get; set; }
+    [JsonProperty("fill"), JsonPropertyName("fill")]
+    public int Fill { get; set; }
+
+    [JsonProperty("fillGradient"), JsonPropertyName("fillGradient")]
+    public int FillGradient { get; set; }
+
+    [JsonProperty("gridPos"), JsonPropertyName("gridPos")]
+    public GridPos GridPos { get; set; }
+
+    [JsonProperty("hiddenSeries"), JsonPropertyName("hiddenSeries")]
+    public bool HiddenSeries { get; set; }
+
+    [JsonProperty("id"), JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    // TODO: [COMPLETE] (Panel.Legend) Test other legend types
+    [JsonProperty("legend"), JsonPropertyName("legend")]
+    public Legend Legend { get; set; }
+
+    [JsonProperty("lines"), JsonPropertyName("lines")]
+    public bool Lines { get; set; }
+
+    [JsonProperty("linewidth"), JsonPropertyName("linewidth")]
+    public int LineWidth { get; set; }
+
+    [JsonProperty("nullPointMode"), JsonPropertyName("nullPointMode")]
+    public string NullPointMode { get; set; }
+
+    [JsonProperty("options"), JsonPropertyName("options")]
+    public Options Options { get; set; }
+
+    [JsonProperty("percentage"), JsonPropertyName("percentage")]
+    public bool Percentage { get; set; }
+
+    [JsonProperty("pluginVersion"), JsonPropertyName("pluginVersion")]
+    public string PluginVersion { get; set; }
+
+    [JsonProperty("pointradius"), JsonPropertyName("pointradius")]
+    public int PointRadius { get; set; }
+
+    [JsonProperty("points"), JsonPropertyName("points")]
+    public bool Points { get; set; }
+
+    [JsonProperty("renderer"), JsonPropertyName("renderer")]
+    public string Renderer { get; set; }
+
+    // TODO: [COMPLETE] (Panel.seriesOverrides) Complete porting
+    [JsonProperty("seriesOverrides"), JsonPropertyName("seriesOverrides")]
+    public object[] SeriesOverrides { get; set; }
+
+    [JsonProperty("spaceLength"), JsonPropertyName("spaceLength")]
+    public int SpaceLength { get; set; }
+
+    [JsonProperty("stack"), JsonPropertyName("stack")]
+    public bool Stack { get; set; }
+
+    [JsonProperty("steppedLine"), JsonPropertyName("steppedLine")]
+    public bool SteppedLine { get; set; }
+
+    [JsonProperty("targets"), JsonPropertyName("targets")]
+    public Target[] Targets { get; set; }
+
+    // TODO: [COMPLETE] (Panel.thresholds) Complete porting
+    [JsonProperty("thresholds"), JsonPropertyName("thresholds")]
+    public object[] Thresholds { get; set; }
+
+    // TODO: [COMPLETE] (Panel.timeFrom) Complete porting
+    [JsonProperty("timeFrom"), JsonPropertyName("timeFrom")]
+    public object TimeFrom { get; set; }
+
+    // TODO: [COMPLETE] (Panel.timeRegions) Complete porting
+    [JsonProperty("timeRegions"), JsonPropertyName("timeRegions")]
+    public object[] TimeRegions { get; set; }
+
+    // TODO: [COMPLETE] (Panel.Panel) Complete porting
+    [JsonProperty("timeShift"), JsonPropertyName("timeShift")]
+    public object TimeShift { get; set; }
+
+    [JsonProperty("title"), JsonPropertyName("title")]
+    public string Title { get; set; }
+
+    [JsonProperty("tooltip"), JsonPropertyName("tooltip")]
+    public Tooltip Tooltip { get; set; }
+
+    [JsonProperty("type"), JsonPropertyName("type")]
+    public string Type { get; set; }
+
+    [JsonProperty("xaxis"), JsonPropertyName("xaxis")]
+    public XAxis Xaxis { get; set; }
+
+    [JsonProperty("yaxes"), JsonPropertyName("yaxes")]
+    public Yax[] Yaxes { get; set; }
+
+    [JsonProperty("yaxis"), JsonPropertyName("yaxis")]
+    public YAxis Yaxis { get; set; }
 
     public Panel()
     {
       // TODO: [TESTS] (Panel.Panel) Add tests
-      AliasColors = new Aliascolors();
+      AliasColors = new AliasColors();
       Bars = false;
       DashLength = 0;
       Dashes = false;
       Datasource = string.Empty;
-      FieldConfig = new Fieldconfig();
+      FieldConfig = new FieldConfig();
+      Fill = 0;
+      FillGradient = 0;
+      HiddenSeries = false;
+      Id = 0;
+      Legend = new Legend();
+      Lines = false;
+      LineWidth = 0;
+      NullPointMode = string.Empty;
+      Percentage = false;
+      PluginVersion = string.Empty;
+      PointRadius = 0;
+      Points = false;
+      Renderer = string.Empty;
+      SeriesOverrides = new object[0];
+      SpaceLength = 0;
+      Stack = false;
+      SteppedLine = false;
+      Targets = new Target[0];
+      Thresholds = new object[0];
+      TimeFrom = null;
+      TimeRegions = new object[0];
+      TimeShift = null;
+      Title = string.Empty;
+      Tooltip = new Tooltip();
+      Type = string.Empty;
+      Xaxis = new XAxis();
+      Yaxes = new Yax[0];
+      Yaxis = new YAxis();
     }
   }
 
-  public class Aliascolors
+  public class AliasColors
   {
   }
 
-  public class Fieldconfig
+  public class FieldConfig
   {
     [JsonProperty("defaults"), JsonPropertyName("defaults")]
     public Defaults Defaults { get; set; }
@@ -154,7 +295,7 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
     [JsonProperty("overrides"), JsonPropertyName("overrides")]
     public object[] Overrides { get; set; }
 
-    public Fieldconfig()
+    public FieldConfig()
     {
       // TODO: [TESTS] (Fieldconfig.Fieldconfig) Add tests
       // TODO: [COMPLETE] (Fieldconfig.Fieldconfig) Complete porting
@@ -181,91 +322,277 @@ namespace GrafanaCli.Core.Models.GrafanaResponses
     // TODO: [COMPLETE] (Custom.Custom) Complete porting
   }
 
-  public class Gridpos
+  public class GridPos
   {
-    public int h { get; set; }
-    public int w { get; set; }
-    public int x { get; set; }
-    public int y { get; set; }
+    [JsonProperty("h"), JsonPropertyName("h")]
+    public int H { get; set; }
+
+    [JsonProperty("w"), JsonPropertyName("w")]
+    public int W { get; set; }
+
+    [JsonProperty("x"), JsonPropertyName("x")]
+    public int X { get; set; }
+
+    [JsonProperty("y"), JsonPropertyName("y")]
+    public int Y { get; set; }
+
+    public GridPos()
+    {
+      // TODO: [TESTS] (Gridpos.Gridpos) Add tests
+      H = 0;
+      W = 0;
+      X = 0;
+      Y = 0;
+    }
   }
 
   public class Legend
   {
-    public bool avg { get; set; }
-    public bool current { get; set; }
-    public bool max { get; set; }
-    public bool min { get; set; }
-    public bool show { get; set; }
-    public bool total { get; set; }
-    public bool values { get; set; }
+    [JsonProperty("avg"), JsonPropertyName("avg")]
+    public bool Avg { get; set; }
+
+    [JsonProperty("current"), JsonPropertyName("current")]
+    public bool Current { get; set; }
+
+    [JsonProperty("max"), JsonPropertyName("max")]
+    public bool Max { get; set; }
+
+    [JsonProperty("min"), JsonPropertyName("min")]
+    public bool Min { get; set; }
+
+    [JsonProperty("show"), JsonPropertyName("show")]
+    public bool Show { get; set; }
+
+    [JsonProperty("total"), JsonPropertyName("total")]
+    public bool Total { get; set; }
+
+    [JsonProperty("values"), JsonPropertyName("values")]
+    public bool Values { get; set; }
+
+    public Legend()
+    {
+      // TODO: [TESTS] (Legend.Legend) Add tests
+      Avg = false;
+      Current = false;
+      Max = false;
+      Min = false;
+      Show = false;
+      Total = false;
+      Values = false;
+    }
   }
 
   public class Options
   {
-    public bool alertThreshold { get; set; }
+    [JsonProperty("alertThreshold"), JsonPropertyName("alertThreshold")]
+    public bool AlertThreshold { get; set; }
+
+    public Options()
+    {
+      // TODO: [TESTS] (Options.Options) Add tests
+      // TODO: [COMPLETE] (Options.Options) Complete porting
+      AlertThreshold = false;
+    }
   }
 
   public class Tooltip
   {
-    public bool shared { get; set; }
-    public int sort { get; set; }
-    public string value_type { get; set; }
+    [JsonProperty("shared"), JsonPropertyName("shared")]
+    public bool Shared { get; set; }
+
+    [JsonProperty("sort"), JsonPropertyName("sort")]
+    public int Sort { get; set; }
+
+    [JsonProperty("value_type"), JsonPropertyName("value_type")]
+    public string ValueType { get; set; }
+
+    public Tooltip()
+    {
+      // TODO: [TESTS] (Tooltip.Tooltip) Add tests
+      Shared = false;
+      Sort = 0;
+      ValueType = string.Empty;
+    }
   }
 
-  public class Xaxis
+  public class XAxis
   {
-    public object buckets { get; set; }
-    public string mode { get; set; }
-    public object name { get; set; }
-    public bool show { get; set; }
-    public object[] values { get; set; }
+    // TODO: [COMPLETE] (Xaxis.buckets) Complete porting
+    [JsonProperty("buckets"), JsonPropertyName("buckets")]
+    public object Buckets { get; set; }
+
+    [JsonProperty("mode"), JsonPropertyName("mode")]
+    public string Mode { get; set; }
+
+    [JsonProperty("name"), JsonPropertyName("name")]
+    public string Name { get; set; }
+
+    [JsonProperty("show"), JsonPropertyName("show")]
+    public bool Show { get; set; }
+
+    // TODO: [COMPLETE] (Xaxis.values) Complete porting
+    [JsonProperty("values"), JsonPropertyName("values")]
+    public object[] Values { get; set; }
+
+    public XAxis()
+    {
+      // TODO: [TESTS] (Xaxis.Xaxis) Add tests
+      Buckets = null;
+      Mode = string.Empty;
+      Name = string.Empty;
+      Show = false;
+      Values = new object[0];
+    }
   }
 
-  public class Yaxis
+  public class YAxis
   {
-    public bool align { get; set; }
-    public object alignLevel { get; set; }
+    [JsonProperty("align"), JsonPropertyName("align")]
+    public bool Align { get; set; }
+
+    // TODO: [COMPLETE] (Yaxis.alignLevel) Complete porting
+    [JsonProperty("alignLevel"), JsonPropertyName("alignLevel")]
+    public object AlignLevel { get; set; }
+
+    public YAxis()
+    {
+      // TODO: [TESTS] (Yaxis.Yaxis) Add tests
+      Align = false;
+      AlignLevel = null;
+    }
   }
 
   public class Target
   {
-    public Groupby[] groupBy { get; set; }
-    public string measurement { get; set; }
-    public string orderByTime { get; set; }
-    public string policy { get; set; }
-    public string refId { get; set; }
-    public string resultFormat { get; set; }
-    public Select[][] select { get; set; }
-    public Tag[] tags { get; set; }
+    [JsonProperty("groupBy"), JsonPropertyName("groupBy")]
+    public GroupBy[] GroupBy { get; set; }
+
+    [JsonProperty("measurement"), JsonPropertyName("measurement")]
+    public string Measurement { get; set; }
+
+    [JsonProperty("orderByTime"), JsonPropertyName("orderByTime")]
+    public string OrderByTime { get; set; }
+
+    [JsonProperty("policy"), JsonPropertyName("policy")]
+    public string Policy { get; set; }
+
+    [JsonProperty("query"), JsonPropertyName("query")]
+    public string Query { get; set; }
+
+    [JsonProperty("rawQuery"), JsonPropertyName("rawQuery")]
+    public bool RawQuery { get; set; }
+
+    [JsonProperty("refId"), JsonPropertyName("refId")]
+    public string RefId { get; set; }
+
+    [JsonProperty("resultFormat"), JsonPropertyName("resultFormat")]
+    public string ResultFormat { get; set; }
+
+    [JsonProperty("select"), JsonPropertyName("select")]
+    public Select[][] Select { get; set; }
+
+    [JsonProperty("tags"), JsonPropertyName("tags")]
+    public Tag[] Tags { get; set; }
+
+    public Target()
+    {
+      // TODO: [TESTS] (Target.Target) Add tests
+      GroupBy = new GroupBy[0];
+      Measurement = string.Empty;
+      OrderByTime = string.Empty;
+      Policy = string.Empty;
+      Query = string.Empty;
+      RawQuery = false;
+      RefId = string.Empty;
+      ResultFormat = string.Empty;
+      Select = new Select[][0];
+      Tags = new Tag[0];
+    }
   }
 
-  public class Groupby
+  public class GroupBy
   {
-    public string[] _params { get; set; }
-    public string type { get; set; }
+    [JsonProperty("params"), JsonPropertyName("params")]
+    public string[] Params { get; set; }
+
+    [JsonProperty("type"), JsonPropertyName("type")]
+    public string Type { get; set; }
+
+    public GroupBy()
+    {
+      // TODO: [TESTS] (GroupBy.GroupBy) Add tests
+      Params = new string[0];
+      Type = string.Empty;
+    }
   }
 
   public class Select
   {
-    public string[] _params { get; set; }
-    public string type { get; set; }
+    [JsonProperty("params"), JsonPropertyName("params")]
+    public string[] Params { get; set; }
+
+    [JsonProperty("type"), JsonPropertyName("type")]
+    public string Type { get; set; }
+
+    public Select()
+    {
+      // TODO: [TESTS] (Select.Select) Add tests
+      Params = new string[0];
+      Type = string.Empty;
+    }
   }
 
   public class Tag
   {
-    public string key { get; set; }
-    public string _operator { get; set; }
-    public string value { get; set; }
+    [JsonProperty("key"), JsonPropertyName("key")]
+    public string Key { get; set; }
+
+    [JsonProperty("operator"), JsonPropertyName("operator")]
+    public string Operator { get; set; }
+
+    [JsonProperty("value"), JsonPropertyName("value")]
+    public string Value { get; set; }
+
+    public Tag()
+    {
+      // TODO: [TESTS] (Tag.Tag) Add tests
+      Key = string.Empty;
+      Operator = string.Empty;
+      Value = string.Empty;
+    }
   }
 
   public class Yax
   {
-    public string format { get; set; }
-    public object label { get; set; }
-    public int logBase { get; set; }
-    public object max { get; set; }
-    public object min { get; set; }
-    public bool show { get; set; }
-  }
+    [JsonProperty("format"), JsonPropertyName("format")]
+    public string Format { get; set; }
 
+    [JsonProperty("label"), JsonPropertyName("label")]
+    public string Label { get; set; }
+
+    [JsonProperty("logBase"), JsonPropertyName("logBase")]
+    public int LogBase { get; set; }
+
+    // TODO: [COMPLETE] (Yax.max) Complete porting
+    [JsonProperty("max"), JsonPropertyName("max")]
+    public object Max { get; set; }
+
+    // TODO: [COMPLETE] (Yax.min) Complete porting
+    [JsonProperty("min"), JsonPropertyName("min")]
+    public object Min { get; set; }
+
+    [JsonProperty("show"), JsonPropertyName("show")]
+    public bool Show { get; set; }
+
+    public Yax()
+    {
+      // TODO: [TESTS] (Yax.Yax) Add tests
+      Format = string.Empty;
+      Label = string.Empty;
+      LogBase = 0;
+      Max = null;
+      Min = null;
+      Show = false;
+    }
+  }
 }
