@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics;
+using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace GrafanaCli.Core.Models.GrafanaResponses
 {
+  [DebuggerDisplay("{Title} (id: {Id})")]
   public class SearchResponse
   {
     [JsonProperty("id"), JsonPropertyName("id")]

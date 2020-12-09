@@ -11,7 +11,8 @@ namespace GrafanaCli.Core.Clients
 {
   public interface IGrafanaClient
   {
-    Task<List<SearchResponse>> SearchDashboards(string query);
+    Task<List<SearchResponse>> SearchDashboards(string query = null);
+    Task<string> GetDashboardJson(string uid);
     Task GetDashboard(string uid);
   }
 
@@ -40,7 +41,7 @@ namespace GrafanaCli.Core.Clients
       _logger.Trace("New instance created");
     }
 
-    public async Task<List<SearchResponse>> SearchDashboards(string query)
+    public async Task<List<SearchResponse>> SearchDashboards(string query = null)
     {
       // TODO: [TESTS] (GrafanaClient.SearchDashboards) Add tests
       // TODO: [TRY] (GrafanaClient.SearchDashboards) Handle exceptions...
@@ -51,8 +52,7 @@ namespace GrafanaCli.Core.Clients
 
       while (!endOfResults)
       {
-        var url = _urlBuilder.ListAllDashboards(
-          query,
+        var url = _urlBuilder.ListAllDashboards(query,
           _config.SearchResultPageLimit,
           pageNumber++
         );
@@ -75,6 +75,17 @@ namespace GrafanaCli.Core.Clients
       return allResults;
     }
 
+    public async Task<string> GetDashboardJson(string uid)
+    {
+      // TODO: [TESTS] (GrafanaClient.GetDashboardJson) Add tests
+
+      var dashboardUrl = _urlBuilder.GetDashboard(uid);
+      var request = new HttpRequestMessage(HttpMethod.Get, dashboardUrl);
+      var response = await _httpClient.SendAsync(request);
+      response.EnsureSuccessStatusCode();
+      return await response.Content.ReadAsStringAsync();
+    }
+
     public async Task GetDashboard(string uid)
     {
       // TODO: [TESTS] (GrafanaClient.GetDashboard) Add tests
@@ -86,8 +97,6 @@ namespace GrafanaCli.Core.Clients
       var responseBody = await response.Content.ReadAsStringAsync();
 
       var dashboard = _jsonAbstraction.DeserializeObject<GrafanaDashboardInfo>(responseBody);
-
-
     }
   }
 }

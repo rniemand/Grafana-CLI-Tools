@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using GrafanaCli.Core.Abstractions;
 using GrafanaCli.Core.Builders;
 using GrafanaCli.Core.Clients;
@@ -23,14 +22,6 @@ namespace GrafanaCli.DevConsole
 
     static void Main(string[] args)
     {
-      var pathBuilder = new DevDataPathBuilder();
-
-      var devUrls = new DevGrafanaUrlResponseBuilder()
-        .WithSearchDashboards("foobar");
-
-      var devResponses = new DevHttpResponsesBuilder()
-        .WithOkJsonResponse("foobar", pathBuilder.ResponseFile("search.dashboards.all.success"));
-
       SetupDIContainer(new DeveloperConfigBuilder()
         //.WithDevHttpClient(devResponses.Build())
         //.WithGrafanaUrlBuilder(devUrls.Build())
@@ -38,17 +29,20 @@ namespace GrafanaCli.DevConsole
 
       var grafanaClient = _provider.GetService<IGrafanaClient>();
 
-      var dashboards = grafanaClient.SearchDashboards("hass")
+      var dashboards = grafanaClient.SearchDashboards()
         .ConfigureAwait(false)
         .GetAwaiter()
         .GetResult();
 
-      var hassDashboard = dashboards.First();
+      foreach (var dashboard in dashboards)
+      {
+        var dashboardJson = grafanaClient.GetDashboardJson(dashboard.Uid)
+          .ConfigureAwait(false)
+          .GetAwaiter()
+          .GetResult();
+      }
 
-      grafanaClient.GetDashboard(hassDashboard.Uid)
-        .ConfigureAwait(false)
-        .GetAwaiter()
-        .GetResult();
+
     }
 
     private static void SetupDIContainer(DeveloperConfig developerConfig = null)
