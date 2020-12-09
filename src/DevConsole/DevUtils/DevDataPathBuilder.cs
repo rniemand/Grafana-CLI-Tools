@@ -1,5 +1,5 @@
 ﻿using System;
-using GrafanaCli.Core.Extensions;
+using Rn.NetCore.Common.Extensions;
 
 namespace GrafanaCli.DevConsole.DevUtils
 {

@@ -10,4 +10,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\sub-modules\Rn.NetCore.Common\src\Rn.NetCore.Common\Rn.NetCore.Common.csproj" />
+  </ItemGroup>
+
 </Project>

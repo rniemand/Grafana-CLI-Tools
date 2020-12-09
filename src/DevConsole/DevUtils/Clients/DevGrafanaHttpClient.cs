@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GrafanaCli.Core.Abstractions;
 using GrafanaCli.Core.Clients;
 using GrafanaCli.Core.Config;
 using GrafanaCli.Core.Enums;
-using GrafanaCli.Core.Logging;
 using GrafanaCli.Core.Models;
+using Rn.NetCore.Common.Abstractions;
+using Rn.NetCore.Common.Logging;
 
 namespace GrafanaCli.DevConsole.DevUtils.Clients
 {
   public class DevGrafanaHttpClient : IGrafanaHttpClient
   {
     private readonly ILoggerAdapter<DevGrafanaHttpClient> _logger;
-    private readonly IFile _file;
+    private readonly IFileAbstraction _file;
     private readonly List<DevHttpResponse> _responses;
 
     public DevGrafanaHttpClient(
       ILoggerAdapter<DevGrafanaHttpClient> logger,
-      IFile file,
+      IFileAbstraction file,
       GrafanaCliConfig config)
     {
       // TODO: [TESTS] (DevGrafanaHttpClient.DevGrafanaHttpClient) Add tests
@@ -69,7 +69,7 @@ namespace GrafanaCli.DevConsole.DevUtils.Clients
 
       if (match != null)
       {
-        _logger.Information("Found matching response ({url}) {type}",
+        _logger.Info("Found matching response ({url}) {type}",
           url, match.ResponseType.ToString("G")
         );
 

@@ -1,6 +1,6 @@
 ﻿using GrafanaCli.Core.Config;
-using GrafanaCli.Core.Extensions;
-using GrafanaCli.Core.Logging;
+using Rn.NetCore.Common.Extensions;
+using Rn.NetCore.Common.Logging;
 
 namespace GrafanaCli.Core.Builders
 {

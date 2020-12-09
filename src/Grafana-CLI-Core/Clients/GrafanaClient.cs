@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GrafanaCli.Core.Abstractions;
 using GrafanaCli.Core.Builders;
 using GrafanaCli.Core.Config;
-using GrafanaCli.Core.Logging;
 using GrafanaCli.Core.Models.GrafanaResponses;
+using Rn.NetCore.Common.Helpers;
+using Rn.NetCore.Common.Logging;
 
 namespace GrafanaCli.Core.Clients
 {
@@ -21,21 +21,21 @@ namespace GrafanaCli.Core.Clients
     private readonly ILoggerAdapter<GrafanaClient> _logger;
     private readonly IGrafanaUrlBuilder _urlBuilder;
     private readonly IGrafanaHttpClient _httpClient;
-    private readonly IJsonAbstraction _jsonAbstraction;
+    private readonly IJsonHelper _jsonHelper;
     private readonly GrafanaCliConfig _config;
 
     public GrafanaClient(
       ILoggerAdapter<GrafanaClient> logger,
       IGrafanaUrlBuilder urlBuilder,
       IGrafanaHttpClient httpClient,
-      IJsonAbstraction jsonAbstraction,
+      IJsonHelper jsonHelper,
       GrafanaCliConfig config)
     {
       // TODO: [TESTS] (GrafanaClient.GrafanaClient) Add tests
       _logger = logger;
       _urlBuilder = urlBuilder;
       _httpClient = httpClient;
-      _jsonAbstraction = jsonAbstraction;
+      _jsonHelper = jsonHelper;
       _config = config;
 
       _logger.Trace("New instance created");
@@ -61,7 +61,7 @@ namespace GrafanaCli.Core.Clients
         var response = await _httpClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
         var responseBody = await response.Content.ReadAsStringAsync();
-        var results = _jsonAbstraction.DeserializeObject<SearchResponse[]>(responseBody);
+        var results = _jsonHelper.DeserializeObject<SearchResponse[]>(responseBody);
         allResults.AddRange(results);
 
         // Check if we are at the end of the results
@@ -96,7 +96,7 @@ namespace GrafanaCli.Core.Clients
       response.EnsureSuccessStatusCode();
       var responseBody = await response.Content.ReadAsStringAsync();
 
-      var dashboard = _jsonAbstraction.DeserializeObject<GrafanaDashboardInfo>(responseBody);
+      var dashboard = _jsonHelper.DeserializeObject<GrafanaDashboardInfo>(responseBody);
     }
   }
 }

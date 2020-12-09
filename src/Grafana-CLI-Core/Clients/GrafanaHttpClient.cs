@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using GrafanaCli.Core.Config;
-using GrafanaCli.Core.Logging;
+using Rn.NetCore.Common.Logging;
 
 namespace GrafanaCli.Core.Clients
 {

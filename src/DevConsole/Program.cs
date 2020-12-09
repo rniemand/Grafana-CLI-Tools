@@ -1,18 +1,17 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using GrafanaCli.Core.Abstractions;
 using GrafanaCli.Core.Builders;
 using GrafanaCli.Core.Clients;
 using GrafanaCli.Core.Config;
-using GrafanaCli.Core.Logging;
-using GrafanaCli.DevConsole.DevUtils;
 using GrafanaCli.DevConsole.DevUtils.Builders;
 using GrafanaCli.DevConsole.DevUtils.Clients;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using Rn.NetCore.Common.Abstractions;
+using Rn.NetCore.Common.Helpers;
+using Rn.NetCore.Common.Logging;
 
 namespace GrafanaCli.DevConsole
 {
@@ -58,9 +57,9 @@ namespace GrafanaCli.DevConsole
         .Build();
 
       collection
-        .AddSingleton<IFile, FileAbstraction>()
+        .AddSingleton<IFileAbstraction, FileAbstraction>()
         .AddSingleton<IGrafanaClient, GrafanaClient>()
-        .AddSingleton<IJsonAbstraction, JsonAbstraction>()
+        .AddSingleton<IJsonHelper, JsonHelper>()
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
         .AddLogging(loggingBuilder =>
         {
