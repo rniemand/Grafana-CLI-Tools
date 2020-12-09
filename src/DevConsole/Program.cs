@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using Rn.NetCore.Common.Abstractions;
+using Rn.NetCore.Common.Extensions;
 using Rn.NetCore.Common.Helpers;
 using Rn.NetCore.Common.Logging;
 
@@ -27,6 +28,17 @@ namespace GrafanaCli.DevConsole
         .Build());
 
       var grafanaClient = _provider.GetService<IGrafanaClient>();
+      var directory = _provider.GetService<IDirectoryAbstraction>();
+      var file = _provider.GetService<IFileAbstraction>();
+      var env = _provider.GetService<IEnvironmentAbstraction>();
+      var jsonHelper = _provider.GetService<IJsonHelper>();
+
+      var baseDir = env.CurrentDirectory.AppendIfMissing("\\");
+      var dataDir = $"{baseDir}data\\";
+      var dashboardDir = $"{dataDir}dashboards\\";
+
+      if (!directory.Exists(dashboardDir))
+        directory.CreateDirectory(dashboardDir);
 
       var dashboards = grafanaClient.SearchDashboards()
         .ConfigureAwait(false)
@@ -35,13 +47,26 @@ namespace GrafanaCli.DevConsole
 
       foreach (var dashboard in dashboards)
       {
+        var paddedId = dashboard.Id.ToString("D").PadLeft(6, '0');
+        var dashboardJsonFile = $"{dashboardDir}dashboard-{paddedId}.json";
+
+        if (file.Exists(dashboardJsonFile))
+          file.Delete(dashboardJsonFile);
+
         var dashboardJson = grafanaClient.GetDashboardJson(dashboard.Uid)
           .ConfigureAwait(false)
           .GetAwaiter()
           .GetResult();
+
+        if (!string.IsNullOrWhiteSpace(dashboardJson))
+        {
+          if (!jsonHelper.TryDeserializeObject(dashboardJson, out object parsed))
+            continue;
+
+          var formattedJson = jsonHelper.SerializeObject(parsed, true);
+          file.WriteAllText(dashboardJsonFile, formattedJson);
+        }
       }
-
-
     }
 
     private static void SetupDIContainer(DeveloperConfig developerConfig = null)
@@ -58,6 +83,8 @@ namespace GrafanaCli.DevConsole
 
       collection
         .AddSingleton<IFileAbstraction, FileAbstraction>()
+        .AddSingleton<IDirectoryAbstraction, DirectoryAbstraction>()
+        .AddSingleton<IEnvironmentAbstraction, EnvironmentAbstraction>()
         .AddSingleton<IGrafanaClient, GrafanaClient>()
         .AddSingleton<IJsonHelper, JsonHelper>()
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
