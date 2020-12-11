@@ -3,6 +3,7 @@ using System.IO;
 using GrafanaCli.Core.Builders;
 using GrafanaCli.Core.Clients;
 using GrafanaCli.Core.Config;
+using GrafanaCli.Core.Helpers;
 using GrafanaCli.DevConsole.DevUtils.Builders;
 using GrafanaCli.DevConsole.DevUtils.Clients;
 using Microsoft.Extensions.Configuration;
@@ -28,18 +29,10 @@ namespace GrafanaCli.DevConsole
         .Build());
 
       var grafanaClient = _provider.GetService<IGrafanaClient>();
-      var directory = _provider.GetService<IDirectoryAbstraction>();
-      var file = _provider.GetService<IFileAbstraction>();
-      var env = _provider.GetService<IEnvironmentAbstraction>();
-      var jsonHelper = _provider.GetService<IJsonHelper>();
-
-      var baseDir = env.CurrentDirectory.AppendIfMissing("\\");
-      var dataDir = $"{baseDir}data\\";
-      var dashboardDir = $"{dataDir}dashboards\\";
-
-      if (!directory.Exists(dashboardDir))
-        directory.CreateDirectory(dashboardDir);
-
+      var pathBuilder = _provider.GetService<IPathBuilder>();
+      var fsHelper = _provider.GetService<IFileSystemHelper>();
+      
+      var dashboardDir = pathBuilder.BuildPath("./dashboards");
       var dashboards = grafanaClient.SearchDashboards()
         .ConfigureAwait(false)
         .GetAwaiter()
@@ -50,22 +43,13 @@ namespace GrafanaCli.DevConsole
         var paddedId = dashboard.Id.ToString("D").PadLeft(6, '0');
         var dashboardJsonFile = $"{dashboardDir}dashboard-{paddedId}.json";
 
-        if (file.Exists(dashboardJsonFile))
-          file.Delete(dashboardJsonFile);
-
         var dashboardJson = grafanaClient.GetDashboardJson(dashboard.Uid)
           .ConfigureAwait(false)
           .GetAwaiter()
           .GetResult();
 
         if (!string.IsNullOrWhiteSpace(dashboardJson))
-        {
-          if (!jsonHelper.TryDeserializeObject(dashboardJson, out object parsed))
-            continue;
-
-          var formattedJson = jsonHelper.SerializeObject(parsed, true);
-          file.WriteAllText(dashboardJsonFile, formattedJson);
-        }
+          fsHelper.SaveJsonFile(dashboardJsonFile, dashboardJson, true);
       }
     }
 
@@ -85,7 +69,10 @@ namespace GrafanaCli.DevConsole
         .AddSingleton<IFileAbstraction, FileAbstraction>()
         .AddSingleton<IDirectoryAbstraction, DirectoryAbstraction>()
         .AddSingleton<IEnvironmentAbstraction, EnvironmentAbstraction>()
+        .AddSingleton<IFileSystemHelper, FileSystemHelper>()
+        .AddSingleton<IPathAbstraction, PathAbstraction>()
         .AddSingleton<IGrafanaClient, GrafanaClient>()
+        .AddSingleton<IPathBuilder, PathBuilder>()
         .AddSingleton<IJsonHelper, JsonHelper>()
         .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
         .AddLogging(loggingBuilder =>
@@ -102,7 +89,10 @@ namespace GrafanaCli.DevConsole
       _provider = collection.BuildServiceProvider();
     }
 
-    private static void RegisterGrafanaCliConfig(IServiceCollection collection, IConfiguration configuration, DeveloperConfig developerConfig)
+    private static void RegisterGrafanaCliConfig(
+      IServiceCollection collection,
+      IConfiguration configuration,
+      DeveloperConfig developerConfig)
     {
       var grafanaCliConfig = new GrafanaCliConfig();
 

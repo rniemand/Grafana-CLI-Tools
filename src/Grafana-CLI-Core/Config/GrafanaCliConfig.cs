@@ -6,6 +6,7 @@
     public string GrafanaApiToken { get; set; }
     public int SearchResultPageLimit { get; set; }
     public DeveloperConfig DevConfig { get; set; }
+    public string DataDirectory { get; set; }
 
     public GrafanaCliConfig()
     {
@@ -14,6 +15,7 @@
       GrafanaApiToken = string.Empty;
       DevConfig = new DeveloperConfig();
       SearchResultPageLimit = 100;
+      DataDirectory = "./Grafana-data";
     }
   }
 }
