@@ -8,10 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\sub-modules\Rn.NetCore.Common\src\Rn.NetCore.Common\Rn.NetCore.Common.csproj" />
+    <PackageReference Include="Rn.NetCore.Common" Version="3.0.0.142" />
   </ItemGroup>
 
 </Project>
