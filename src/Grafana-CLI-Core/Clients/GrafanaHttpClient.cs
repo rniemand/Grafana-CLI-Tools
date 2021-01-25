@@ -21,9 +21,13 @@ namespace GrafanaCli.Core.Clients
       GrafanaCliConfig config)
     {
       // TODO: [TESTS] (GrafanaHttpClient.GrafanaHttpClient) Add tests
-
       _logger = logger;
-      _httpClient = new HttpClient();
+
+      var httpClientHandler = new HttpClientHandler();
+      if (config.AcceptAnyServerCertificate)
+        httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+      _httpClient = new HttpClient(httpClientHandler);
 
       _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
         "Bearer",

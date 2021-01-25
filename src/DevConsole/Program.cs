@@ -28,10 +28,10 @@ namespace GrafanaCli.DevConsole
         //.WithGrafanaUrlBuilder(devUrls.Build())
         .Build());
 
-      var grafanaClient = _provider.GetService<IGrafanaClient>();
-      var pathBuilder = _provider.GetService<IPathBuilder>();
-      var fsHelper = _provider.GetService<IFileSystemHelper>();
-      
+      var grafanaClient = _provider.GetRequiredService<IGrafanaClient>();
+      var pathBuilder = _provider.GetRequiredService<IPathBuilder>();
+      var fsHelper = _provider.GetRequiredService<IFileSystemHelper>();
+
       var dashboardDir = pathBuilder.BuildPath("./dashboards");
       var dashboards = grafanaClient.SearchDashboards()
         .ConfigureAwait(false)
