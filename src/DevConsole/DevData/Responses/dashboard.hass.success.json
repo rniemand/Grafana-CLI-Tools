@@ -1,0 +1,433 @@
+{
+  "meta": {
+    "type": "db",
+    "canSave": false,
+    "canEdit": false,
+    "canAdmin": false,
+    "canStar": true,
+    "slug": "hass-sample",
+    "url": "/d/FJ1QoehGz/hass-sample",
+    "expires": "0001-01-01T00:00:00Z",
+    "created": "2020-11-11T22:41:32Z",
+    "updated": "2020-11-12T04:36:14Z",
+    "updatedBy": "admin",
+    "createdBy": "admin",
+    "version": 10,
+    "hasAcl": false,
+    "isFolder": false,
+    "folderId": 0,
+    "folderTitle": "General",
+    "folderUrl": "",
+    "provisioned": false,
+    "provisionedExternalId": ""
+  },
+  "dashboard": {
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations \u0026 Alerts",
+          "type": "dashboard"
+        },
+        {
+          "datasource": "HASS",
+          "enable": true,
+          "hide": false,
+          "iconColor": "rgba(255, 96, 96, 1)",
+          "limit": 100,
+          "name": "Hass-annotation",
+          "query": "SELECT mean(\"value\") FROM \"GB\" WHERE (\"entity_id\" = 'kelsie_pixel2_total_tx_gb') AND $timeFilter GROUP BY time($__interval) fill(none)",
+          "showIn": 0,
+          "tags": [],
+          "tagsColumn": "tag",
+          "textColumn": "hello",
+          "type": "tags"
+        }
+      ]
+    },
+    "description": "Hello World Description",
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 1,
+    "id": 3,
+    "links": [
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [ "tag1", "tag2" ],
+        "targetBlank": true,
+        "title": "Hello Dropdown",
+        "type": "dashboards"
+      },
+      {
+        "icon": "dashboard",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Open me",
+        "tooltip": "Tooltip Vibe",
+        "type": "link",
+        "url": "https://grafana.com/docs/grafana/latest/http_api/"
+      },
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "keepTime": true,
+        "tags": [ "Whoops" ],
+        "title": "Dropdown",
+        "type": "dashboards"
+      },
+      {
+        "icon": "external link",
+        "tags": [ "Hi" ],
+        "targetBlank": true,
+        "type": "dashboards"
+      }
+    ],
+    "panels": [
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "HASS",
+        "fieldConfig": {
+          "defaults": { "custom": {} },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "hiddenSeries": false,
+        "id": 4,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": { "alertThreshold": true },
+        "percentage": false,
+        "pluginVersion": "7.3.1",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "groupBy": [
+              {
+                "params": [ "$__interval" ],
+                "type": "time"
+              },
+              {
+                "params": [ "none" ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "GB",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"value\") FROM \"GB\" WHERE (\"entity_id\" = 'kelsie_pixel2_total_tx_gb') AND $timeFilter GROUP BY time($__interval) fill(none)",
+            "rawQuery": false,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [ "value" ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "entity_id",
+                "operator": "=",
+                "value": "kelsie_pixel2_total_tx_gb"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Panel Title",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": { "custom": {} },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "hiddenSeries": false,
+        "id": 2,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": { "alertThreshold": true },
+        "percentage": false,
+        "pluginVersion": "7.3.1",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "groupBy": [
+              {
+                "params": [ "$__interval" ],
+                "type": "time"
+              },
+              {
+                "params": [ "null" ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "win_cpu",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [ "Percent_Privileged_Time" ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "host",
+                "operator": "=",
+                "value": "nas"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Panel Title",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "schemaVersion": 26,
+    "style": "dark",
+    "tags": [ "tag1", "tag2" ],
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "Bob",
+            "value": "Bob"
+          },
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "Test",
+          "options": [
+            {
+              "selected": true,
+              "text": "Bob",
+              "value": "Bob"
+            }
+          ],
+          "query": "Bob",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "kelsie_pixel2_mobile_rx_gb",
+            "value": "kelsie_pixel2_mobile_rx_gb"
+          },
+          "datasource": "HASS",
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "SamIsNotListening",
+          "options": [],
+          "query": "SHOW TAG VALUES FROM \"GB\" WITH KEY = \"entity_id\"",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": "All",
+          "current": {
+            "selected": true,
+            "text": [ "kelsie_pixel2_mobile_rx_gb" ],
+            "value": [ "kelsie_pixel2_mobile_rx_gb" ]
+          },
+          "datasource": "HASS",
+          "error": null,
+          "hide": 1,
+          "includeAll": true,
+          "label": "label",
+          "multi": true,
+          "name": "Another",
+          "options": [],
+          "query": "SHOW TAG VALUES FROM \"GB\" WITH KEY = \"entity_id\"",
+          "refresh": 1,
+          "regex": "/.*/",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Hass Sample",
+    "uid": "FJ1QoehGz",
+    "version": 10
+  }
+}
